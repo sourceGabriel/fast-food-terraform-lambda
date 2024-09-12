@@ -5,11 +5,11 @@ data "archive_file" "login" {
   output_path = "${path.module}/login.zip"
 }
 
-resource "aws_s3_object" "lambda_login" {
-  bucket = aws_s3_bucket.login_bucket.id
+data "aws_apigatewayv2_apis" "api-gateway" {  
+  name          = "fiap-fast-food-api-gateway"
+  protocol_type = "HTTP"
+}
 
-  key    = "login.zip"
-  source = data.archive_file.login.output_path
-
-  etag = filemd5(data.archive_file.login.output_path)
+data "aws_apigatewayv2_api" "api-gateway" {
+  api_id = tolist(data.aws_apigatewayv2_apis.api-gateway.ids)[0]
 }
