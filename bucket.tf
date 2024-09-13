@@ -27,4 +27,4 @@ resource "aws_s3_bucket_acl" "login_bucket" {
   depends_on = [aws_s3_bucket_ownership_controls.login_bucket]
   bucket = aws_s3_bucket.login_bucket.id
   acl    = "private"
-}
+} 
