@@ -5,11 +5,10 @@ data "archive_file" "login" {
   output_path = "${path.module}/login.zip"
 }
 
-data "aws_apigatewayv2_apis" "api-gateway" {  
-  name          = "fiap-fast-food-api-gateway"
-  protocol_type = "HTTP"
+data "aws_caller_identity" "current" {
+  
 }
 
-data "aws_apigatewayv2_api" "api-gateway" {
-  api_id = tolist(data.aws_apigatewayv2_apis.api-gateway.ids)[0]
+data "aws_api_gateway_rest_api" "api-gateway" {
+  name = "fiap-fast-food-api-gateway"
 }
