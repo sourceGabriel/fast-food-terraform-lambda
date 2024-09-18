@@ -37,15 +37,15 @@ jobs:
         uses: hashicorp/setup-terraform@v3
 
       - name: Terraform Init
-        working-directory: ..\fast-food-terraform-lambda\
+        working-directory: ./
         run: terraform init
 
       - name: Validate Terraform
-        working-directory: ..\fast-food-terraform-lambda\
+        working-directory: ./
         run: terraform validate
 
       - name: Plan Terraform
-        working-directory: ..\fast-food-terraform-lambda\
+        working-directory: ./
         run: terraform plan
 
   create-pull-request:
