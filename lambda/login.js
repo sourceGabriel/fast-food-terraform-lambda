@@ -18,7 +18,7 @@ function init(username) {
             console.log('Usuário não encontrado');
             return;
         }
-        
+
         //chamada ao próximo AWS Lambda
     });
 }
