@@ -14,41 +14,45 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v2
+      - name: Checkout code
+        uses: actions/checkout@v2
 
-    - name: Configure AWS credentials
-      uses: aws-actions/configure-aws-credentials@v3
-      with:
-        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        aws-session-token: ${{ secrets.AWS_SESSION_TOKEN }}
-        aws-region: us-east-1
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v3
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-session-token: ${{ secrets.AWS_SESSION_TOKEN }}
+          aws-region: us-east-1
 
-    - name: Install Terraform
-      uses: hashicorp/setup-terraform@v2
-
-    - name: Terraform Init
-      run: terraform init
-
-    - name: Validate Terraform
-      run: terraform validate
-
-    - name: Plan Terraform
-      run: terraform plan
-
-  create-pull-request:
+  terraform:
     needs: validate
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v2
+      - name: Install Terraform
+        uses: hashicorp/setup-terraform@v2
 
-    - name: pull-request
-      uses: repo-sync/pull-request@v2
-      with:
-        destination_branch: "main"
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-        pr_label: "PR Automatica :rocket:"
-        pr_title: "Alteração de Infra"
+      - name: Terraform Init
+        run: terraform init
+
+      - name: Validate Terraform
+        run: terraform validate
+
+      - name: Plan Terraform
+        run: terraform plan
+
+  create-pull-request:
+    needs: [terraform, validate]
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: pull-request
+        uses: repo-sync/pull-request@v2
+        with:
+          destination_branch: "main"
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          pr_label: "PR Automatica :rocket:"
+          pr_title: "Alteração de Infra"
