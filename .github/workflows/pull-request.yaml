@@ -30,19 +30,23 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
       - name: Install Terraform
         uses: hashicorp/setup-terraform@v3
 
       - name: Terraform Init
+        working-directory: ..\fast-food-terraform-lambda\
         run: terraform init
 
       - name: Validate Terraform
+        working-directory: ..\fast-food-terraform-lambda\
         run: terraform validate
 
       - name: Plan Terraform
-        run: |
-          terraform init
-          terraform plan
+        working-directory: ..\fast-food-terraform-lambda\
+        run: terraform plan
 
   create-pull-request:
     needs: [terraform, validate]
