@@ -17,6 +17,9 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
+      - name: Create AWS credentials directory
+        run: mkdir -p ~/.aws
+
       - name: Configure AWS credentials
         run: |
           echo "[default]" > ~/.aws/credentials
