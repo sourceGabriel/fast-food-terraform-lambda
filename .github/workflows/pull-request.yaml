@@ -36,7 +36,3 @@ jobs:
 
       - name: Run custom action from another repository
         uses: FIAP-6SOAT-G10/fiap-fast-food-terraform-api-gateway/.github/workflows/pull-request.yaml@main
-        with:
-          environment: 'dev'
-          project_name: 'fiap-fast-food-app'
-          aws_region: 'us-east-1'
