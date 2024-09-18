@@ -1,13 +1,3 @@
-provider "aws" {
-  region = var.aws_region
-
-  default_tags {
-    tags = {
-      tech-challenge-fase-3 = "fiap-fast-food-app"
-    }
-  }
-}
-
 resource "aws_lambda_function" "login" {
   function_name = "login"
 
