@@ -40,7 +40,9 @@ jobs:
         run: terraform validate
 
       - name: Plan Terraform
-        run: terraform plan
+        run: |
+          terraform init
+          terraform plan
 
   create-pull-request:
     needs: [terraform, validate]
