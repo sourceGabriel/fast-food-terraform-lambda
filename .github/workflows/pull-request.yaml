@@ -34,33 +34,9 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Install Terraform
-        uses: hashicorp/setup-terraform@v3
-
-      - name: Terraform Init
-        working-directory: ./
-        run: terraform init
-
-      - name: Validate Terraform
-        working-directory: ./
-        run: terraform validate
-
-      - name: Plan Terraform
-        working-directory: ./
-        run: terraform plan
-
-  create-pull-request:
-    needs: [terraform, validate]
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-
-      - name: pull-request
-        uses: repo-sync/pull-request@v2
+      - name: Run custom action from another repository
+        uses: FIAP-6SOAT-G10/fiap-fast-food-terraform-api-gateway/.github/workflows/pull-request.yaml@main
         with:
-          destination_branch: "main"
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          pr_label: "PR Automatica :rocket:"
-          pr_title: "Alteração de Infra"
+          environment: 'dev'
+          project_name: 'fiap-fast-food-app'
+          aws_region: 'us-east-1'
