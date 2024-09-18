@@ -34,5 +34,6 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Run custom action from another repository
-        uses: FIAP-6SOAT-G10/fiap-fast-food-terraform-api-gateway/.github/workflows/pull-request.yaml@main
+  run-custom-action:
+    needs: terraform
+    uses: FIAP-6SOAT-G10/fiap-fast-food-terraform-api-gateway/.github/workflows/pull-request.yaml@main
