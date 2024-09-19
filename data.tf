@@ -5,6 +5,13 @@ data "archive_file" "login" {
   output_path = "${path.module}/login.zip"
 }
 
+data "archive_file" "auth" {
+  type = "zip"
+
+  source_dir  = "${path.module}/auth"
+  output_path = "${path.module}/auth.zip"
+}
+
 data "aws_caller_identity" "current" {
   
 }

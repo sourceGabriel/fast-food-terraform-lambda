@@ -11,9 +11,9 @@ resource "aws_api_gateway_method" "login_post_method" {
   authorization = "NONE"
 }
 
-resource "aws_api_gateway_model" "MyDemoModel" {
+resource "aws_api_gateway_model" "login_model" {
   rest_api_id  = data.aws_api_gateway_rest_api.api-gateway.id
-  name         = "user"
+  name         = "login"
   description  = "a JSON schema"
   content_type = "application/json"
 
@@ -59,5 +59,5 @@ resource "aws_api_gateway_deployment" "api-gateway-deployment" {
 resource "aws_api_gateway_stage" "api-gateway-deployment-stage" {
   deployment_id = aws_api_gateway_deployment.api-gateway-deployment.id
   rest_api_id   = data.aws_api_gateway_rest_api.api-gateway.id
-  stage_name    = "dev"
+  stage_name    = "dev-login"
 }
