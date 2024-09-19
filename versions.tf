@@ -14,3 +14,13 @@ terraform {
     }
   }
 }
+
+provider "aws" {
+  region = var.aws_region
+
+  default_tags {
+    tags = {
+      tech-challenge-fase-3 = "fiap-fast-food-app"
+    }
+  }
+}
