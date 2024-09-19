@@ -13,6 +13,13 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
+      - name: Read configuration
+        id: config
+        run: |
+          echo "Reading configuration..."
+          CONFIG_DESTROY=$(cat config.yaml | grep destroy | awk '{print $2}')
+          echo "::set-output name=destroy::$CONFIG_DESTROY"
+
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v3
         with:
@@ -28,4 +35,9 @@ jobs:
         run: terraform init
 
       - name: Terraform Apply
+        if: steps.config.outputs.destroy == 'false'
         run: terraform apply --auto-approve
+
+      - name: Terraform Destroy
+        if: steps.config.outputs.destroy == 'true'
+        run: terraform destroy --auto-approve
