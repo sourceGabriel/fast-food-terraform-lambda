@@ -1,7 +1,7 @@
 resource "aws_api_gateway_resource" "login_resource" {
   rest_api_id = data.aws_api_gateway_rest_api.api-gateway.id
   parent_id   = data.aws_api_gateway_rest_api.api-gateway.root_resource_id
-  path_part   = "login"
+  path_part   = "login-new"
 }
 
 resource "aws_api_gateway_method" "login_post_method" {
@@ -13,7 +13,7 @@ resource "aws_api_gateway_method" "login_post_method" {
 
 resource "aws_api_gateway_model" "MyDemoModel" {
   rest_api_id  = data.aws_api_gateway_rest_api.api-gateway.id
-  name         = "user"
+  name         = "user-new"
   description  = "a JSON schema"
   content_type = "application/json"
 
