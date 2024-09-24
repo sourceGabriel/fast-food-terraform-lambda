@@ -35,13 +35,16 @@ jobs:
         run: terraform init
 
       - name: Create handler directory
-        run: mkdir -p handler
+        run: mkdir -p handler/auth handler/login
 
       - name: Clone Authorization Repository
         run: git clone https://github.com/FIAP-6SOAT-G10/fiap-fast-food-lambda-authorization.git handler/auth
 
       - name: Clone Login Repository
         run: git clone https://github.com/FIAP-6SOAT-G10/fiap-fast-food-lambda-login.git handler/login
+
+      - name: List handler directory contents
+        run: ls -R handler
 
       - name: Terraform Apply
         if: steps.config.outputs.destroy == 'false'
