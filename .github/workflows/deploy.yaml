@@ -38,10 +38,10 @@ jobs:
         run: mkdir -p handler
 
       - name: Copy Authorization Files
-        run: cp -r lambda/authorization/* ./
+        run: cp -r lambda/authorization/* handler/
 
       - name: Copy Login Files
-        run: cp -r lambda/login/* ./
+        run: cp -r lambda/login/* handler/
 
       - name: Terraform Apply
         if: steps.config.outputs.destroy == 'false'
