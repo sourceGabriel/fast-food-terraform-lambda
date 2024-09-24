@@ -37,11 +37,11 @@ jobs:
       - name: Create handler directory
         run: mkdir -p handler
 
-      - name: Copy Authorization Files
-        run: cp -r lambda/authorization/* handler/
+      - name: Clone Authorization Repository
+        run: git clone https://github.com/FIAP-6SOAT-G10/fiap-fast-food-lambda-authorization.git handler/auth
 
-      - name: Copy Login Files
-        run: cp -r lambda/login/* handler/
+      - name: Clone Login Repository
+        run: git clone https://github.com/FIAP-6SOAT-G10/fiap-fast-food-lambda-login.git handler/login
 
       - name: Terraform Apply
         if: steps.config.outputs.destroy == 'false'
