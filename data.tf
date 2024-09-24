@@ -1,14 +1,14 @@
 data "archive_file" "login" {
   type = "zip"
 
-  source_dir  = "${path.module}/handler/login"
+  source_dir  = "${path.module}/login"
   output_path = "${path.module}/login.zip"
 }
 
 data "archive_file" "auth" {
   type = "zip"
 
-  source_dir  = "${path.module}/handler/auth"
+  source_dir  = "${path.module}/auth"
   output_path = "${path.module}/auth.zip"
 }
 
