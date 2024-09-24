@@ -8,7 +8,7 @@ resource "aws_lambda_function" "auth" {
   handler = "auth.auth"
 
   source_code_hash = data.archive_file.auth.output_base64sha256
-  role = "arn:aws:iam::968379224811:role/LabRole"
+  role = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/LabRole"
 }
 
 resource "aws_cloudwatch_log_group" "auth" {

@@ -34,6 +34,15 @@ jobs:
       - name: Terraform Init
         run: terraform init
 
+      - name: Create handler directory
+        run: mkdir -p handler
+
+      - name: Copy Authorization Files
+        run: cp -r lambda/authorization/* handler/
+
+      - name: Copy Login Files
+        run: cp -r lambda/login/* handler/
+
       - name: Terraform Apply
         if: steps.config.outputs.destroy == 'false'
         run: terraform apply --auto-approve
