@@ -70,9 +70,9 @@ jobs:
         run: terraform init
 
       - name: Terraform Apply
-        if: needs.checkout.outputs.destroy == 'false'
+        if: "${{ env.DESTROY }}" == 'false'
         run: terraform apply --auto-approve
 
       - name: Terraform Destroy
-        if: needs.checkout.outputs.destroy == 'true'
+        if: "${{ env.DESTROY }}" == 'true'
         run: terraform destroy --auto-approve
