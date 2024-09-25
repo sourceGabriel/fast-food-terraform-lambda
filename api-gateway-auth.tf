@@ -40,7 +40,7 @@ EOF
   }
 }
 
-resource "aws_api_gateway_deployment" "auth-deployment" {
+resource "aws_api_gateway_deployment" "auth_deployment" {
   rest_api_id = data.aws_api_gateway_rest_api.api-gateway.id
 
   triggers = {
@@ -54,10 +54,14 @@ resource "aws_api_gateway_deployment" "auth-deployment" {
   lifecycle {
     create_before_destroy = true
   }
+
+  depends_on = [
+    aws_api_gateway_integration.auth_integration
+  ]
 }
 
-resource "aws_api_gateway_stage" "auth-deployment-stage" {
-  deployment_id = aws_api_gateway_deployment.auth-deployment.id
+resource "aws_api_gateway_stage" "auth_deployment_stage" {
+  deployment_id = aws_api_gateway_deployment.auth_deployment.id
   rest_api_id   = data.aws_api_gateway_rest_api.api-gateway.id
   stage_name    = "dev-auth"
 }

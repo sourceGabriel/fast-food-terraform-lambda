@@ -6,7 +6,7 @@ on:
       - main
 
 jobs:
-  deploy:
+  checkout:
     runs-on: ubuntu-latest
 
     steps:
@@ -20,6 +20,14 @@ jobs:
           CONFIG_DESTROY=$(cat config.yaml | grep destroy | awk '{print $2}')
           echo "::set-output name=destroy::$CONFIG_DESTROY"
 
+  aws-config:
+    runs-on: ubuntu-latest
+    needs: checkout
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v3
         with:
@@ -28,11 +36,13 @@ jobs:
           aws-region: us-east-1
           aws-session-token: ${{ secrets.AWS_SESSION_TOKEN }}
 
-      - name: Install Terraform
-        uses: hashicorp/setup-terraform@v2
+  prepare:
+    runs-on: ubuntu-latest
+    needs: aws-config
 
-      - name: Terraform Init
-        run: terraform init
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
 
       - name: Create handler directory
         run: mkdir -p handler/auth handler/login
@@ -46,10 +56,24 @@ jobs:
       - name: List handler directory contents
         run: ls -R handler
 
+  terraform:
+    runs-on: ubuntu-latest
+    needs: prepare
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Install Terraform
+        uses: hashicorp/setup-terraform@v2
+
+      - name: Terraform Init
+        run: terraform init
+
       - name: Terraform Apply
-        if: steps.config.outputs.destroy == 'false'
+        if: needs.read-config.outputs.config.outputs.destroy == 'false'
         run: terraform apply --auto-approve
 
       - name: Terraform Destroy
-        if: steps.config.outputs.destroy == 'true'
+        if: needs.read-config.outputs.config.outputs.destroy == 'true'
         run: terraform destroy --auto-approve
