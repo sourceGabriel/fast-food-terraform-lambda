@@ -17,8 +17,8 @@ jobs:
         id: config
         run: |
           echo "Reading configuration..."
-          CONFIG_DESTROY=$(cat config.yaml | grep destroy | awk '{print $2}')
-          echo "::set-output name=destroy::$CONFIG_DESTROY"
+          CONFIG_DESTROY=$(grep destroy config.yaml | awk '{print $2}')
+          echo "destroy=$CONFIG_DESTROY" >> $GITHUB_ENV
 
   aws-config:
     runs-on: ubuntu-latest
@@ -71,9 +71,9 @@ jobs:
         run: terraform init
 
       - name: Terraform Apply
-        if: needs.read-config.outputs.config.outputs.destroy == 'false'
+        if: env.destroy == 'false'
         run: terraform apply --auto-approve
 
       - name: Terraform Destroy
-        if: needs.read-config.outputs.config.outputs.destroy == 'true'
+        if: env.destroy == 'true'
         run: terraform destroy --auto-approve
