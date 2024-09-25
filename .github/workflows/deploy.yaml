@@ -1,0 +1,55 @@
+name: Deploy
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Read configuration
+        id: config
+        run: |
+          echo "Reading configuration..."
+          CONFIG_DESTROY=$(cat config.yaml | grep destroy | awk '{print $2}')
+          echo "::set-output name=destroy::$CONFIG_DESTROY"
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v3
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
+          aws-session-token: ${{ secrets.AWS_SESSION_TOKEN }}
+
+      - name: Install Terraform
+        uses: hashicorp/setup-terraform@v2
+
+      - name: Terraform Init
+        run: terraform init
+
+      - name: Create handler directory
+        run: mkdir -p handler/auth handler/login
+
+      - name: Clone Authorization Repository
+        run: git clone https://github.com/FIAP-6SOAT-G10/fiap-fast-food-lambda-authorization.git handler/auth
+
+      - name: Clone Login Repository
+        run: git clone https://github.com/FIAP-6SOAT-G10/fiap-fast-food-lambda-login.git handler/login
+
+      - name: List handler directory contents
+        run: ls -R handler
+
+      - name: Terraform Apply
+        if: steps.config.outputs.destroy == 'false'
+        run: terraform apply --auto-approve
+
+      - name: Terraform Destroy
+        if: steps.config.outputs.destroy == 'true'
+        run: terraform destroy --auto-approve
