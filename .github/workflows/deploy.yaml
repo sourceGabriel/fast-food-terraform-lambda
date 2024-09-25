@@ -13,10 +13,13 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Install yq
+        run: sudo apt-get install -y yq
+
       - name: Read configuration
         id: config
         run: |
-          CONFIG_DESTROY=$(python -c "import yaml; print(yaml.safe_load(open('config.yaml'))['destroy'])")
+          CONFIG_DESTROY=$(yq e '.destroy' config.yaml)
           echo "::set-output name=destroy::$CONFIG_DESTROY"
 
   aws-config:
