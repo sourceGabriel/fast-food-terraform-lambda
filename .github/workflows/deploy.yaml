@@ -6,23 +6,9 @@ on:
       - fontegabriel/*
 
 jobs:
-  checkout:
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Read configuration
-        id: config
-        run: |
-          CONFIG_DESTROY=$(jq -r '.destroy' config.json)
-          echo "::set-output name=destroy::$CONFIG_DESTROY"
-
   aws-config:
     runs-on: ubuntu-latest
-    needs: checkout
-
+  
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
