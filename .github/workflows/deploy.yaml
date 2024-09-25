@@ -56,9 +56,9 @@ jobs:
         run: terraform init
 
       - name: Terraform Apply
-        if: ${{ env.DESTROY == 'false' }}
+        if: ${{ env.DESTROY == false }}
         run: terraform apply --auto-approve
 
       - name: Terraform Destroy
-        if: ${{ env.DESTROY == 'true' }}
+        if: ${{ env.DESTROY == true }}
         run: terraform destroy --auto-approve
