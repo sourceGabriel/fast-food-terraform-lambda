@@ -60,6 +60,9 @@ jobs:
       - name: Install Terraform
         uses: hashicorp/setup-terraform@v3
 
+      - name: Change to repository root
+        run: cd ${{ github.workspace }}
+
       - name: Verify handler directories
         run: |
           echo "Current working directory: $(pwd)"
