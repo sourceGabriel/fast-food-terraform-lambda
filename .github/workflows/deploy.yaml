@@ -55,6 +55,13 @@ jobs:
       - name: Terraform Init
         run: terraform init
 
+      - name: Verify handler directories
+        run: |
+          if [ ! -d "handler/auth" ] || [ ! -d "handler/login" ]; then
+            echo "Handler directories are missing"
+            exit 1
+          fi
+
       - name: Terraform Apply
         if: ${{ env.DESTROY == false }}
         run: terraform apply --auto-approve
