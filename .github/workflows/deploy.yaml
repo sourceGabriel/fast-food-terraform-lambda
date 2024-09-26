@@ -52,15 +52,16 @@ jobs:
       - name: Install Terraform
         uses: hashicorp/setup-terraform@v3
 
-      - name: Terraform Init
-        run: terraform init
-
       - name: Verify handler directories
         run: |
+          ls -R handler
           if [ ! -d "handler/auth" ] || [ ! -d "handler/login" ]; then
             echo "Handler directories are missing"
             exit 1
           fi
+
+      - name: Terraform Init
+        run: terraform init
 
       - name: Terraform Apply
         if: ${{ env.DESTROY == false }}
