@@ -38,6 +38,13 @@ jobs:
       - name: Clone Login Repository
         run: git clone https://github.com/FIAP-6SOAT-G10/fiap-fast-food-lambda-login.git handler/login
 
+      - name: Verify cloned directories
+        run: |
+          if [ ! -d "handler/auth" ] || [ ! -d "handler/login" ]; then
+            echo "Handler directories are missing after clone"
+            exit 1
+          fi
+
       - name: List handler directory contents
         run: ls -R handler
 
@@ -54,7 +61,6 @@ jobs:
 
       - name: Verify handler directories
         run: |
-          sleep 10  # Add a delay to ensure directories are available
           ls -R handler
           if [ ! -d "handler/auth" ] || [ ! -d "handler/login" ]; then
             echo "Handler directories are missing"
