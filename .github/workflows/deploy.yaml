@@ -41,31 +41,8 @@ jobs:
       - name: List handler directory contents
         run: ls -R handler
 
-      - name: Upload handler directories as artifact
-        uses: actions/upload-artifact@v3
-        with:
-          name: handler-directories
-          path: handler
-
-  terraform:
-    runs-on: ubuntu-latest
-    needs: prepare
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Download handler directories artifact
-        uses: actions/download-artifact@v3
-        with:
-          name: handler-directories
-          path: .
-
       - name: Install Terraform
         uses: hashicorp/setup-terraform@v3
-
-      - name: Change to repository root
-        run: cd ${{ github.workspace }}
 
       - name: Terraform Init
         run: terraform init
